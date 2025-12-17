@@ -73,6 +73,8 @@ pdf_merger_app/
 ├── dashboard_preview.png   # Screenshot for README
 ├── requirements.txt        # Dependencies list
 └── README.md               # Documentation
+```
 
 ## 📄 License
+
 This project is licensed under the MIT License. Feel free to fork, modify, and use it for your own workflows.
