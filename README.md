@@ -28,8 +28,8 @@ It features a professional "Dark Mode" dashboard, real-time file analytics, and 
 
 1.  **Clone the repository**:
     ```bash
-    git clone [https://github.com/EF361/pdf-fusion-pro.git](https://github.com/EF361/pdf-fusion-pro.git)
-    cd pdf-fusion-pro
+    git clone [https://github.com/EF361/pdf_merger.git](https://github.com/EF361/pdf_merger.git)
+    cd pdf_merger
     ```
 
 2.  **Create a virtual environment (Recommended)**:
