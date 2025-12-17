@@ -121,7 +121,7 @@ with st.sidebar:
             st.caption("⚠️ Please enter a password")
 
     st.markdown("---")
-    st.markdown("YOUR BRAND · v1.2")
+    st.markdown("v1.2")
 
 # --- 5. MAIN DASHBOARD ---
 
