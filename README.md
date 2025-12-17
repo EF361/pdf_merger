@@ -2,6 +2,8 @@
 
 **A secure, local-first PDF manipulation dashboard built for privacy and speed.**
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Streamlit-FF4B4B?style=for-the-badge&logo=streamlit)](https://mergepdfwizard.streamlit.app)
+
 ![PDF Fusion Pro Dashboard](dashboard_preview.png)
 
 ## 🚀 Overview
@@ -28,7 +30,7 @@ It features a professional "Dark Mode" dashboard, real-time file analytics, and 
 
 1.  **Clone the repository**:
     ```bash
-    git clone [https://github.com/EF361/pdf_merger.git](https://github.com/EF361/pdf_merger.git)
+    git clone https://github.com/EF361/pdf_merger.git
     cd pdf_merger
     ```
 
@@ -48,6 +50,11 @@ It features a professional "Dark Mode" dashboard, real-time file analytics, and 
 
 ## 🏃‍♂️ How to Run
 
+### Option 1: Try the Live Demo
+You can access the deployed version immediately without installation:
+👉 **[Click here to open PDF Fusion Pro](https://mergepdfwizard.streamlit.app)**
+
+### Option 2: Run Locally
 1.  **Launch the application**:
     ```bash
     streamlit run pdf_merger.py
