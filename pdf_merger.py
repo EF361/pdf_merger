@@ -223,14 +223,6 @@ if uploaded_pdfs:
         elif num_files < 2:
              st.info("ℹ️ Please upload at least 2 files to merge.")
              can_merge = False
-        
-        # Show Current Order (Preview)
-        if can_merge:
-            st.markdown("**Sequence Preview:**")
-            # Show a mini list of the first 3 files to confirm order
-            preview_text = " ➡️ ".join([f['Filename'][:10]+"..." for f in sorted_df.to_dict('records')[:3]])
-            if len(sorted_df) > 3: preview_text += "..."
-            st.caption(preview_text)
 
         if can_merge:
             if st.button("Begin Merge Sequence ⚡"):
