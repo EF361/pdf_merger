@@ -1,12 +1,13 @@
 import streamlit as st
 from pypdf import PdfWriter, PdfReader
 from io import BytesIO
+import pandas as pd # <--- Added pandas for table manipulation
 
 # --- 1. PAGE & THEME CONFIGURATION ---
 st.set_page_config(
     page_title="PDF Fusion Pro",
     page_icon="📄",
-    layout="wide", # <--- Key change for dashboard feel
+    layout="wide",
     initial_sidebar_state="expanded"
 )
 
@@ -58,11 +59,12 @@ st.markdown("""
 # --- 3. HELPER FUNCTIONS ---
 def get_pdf_stats(pdf_files):
     """Analyzes uploaded files to get page counts and total size."""
-    stats = []
+    stats_data = []
     total_pages = 0
     total_size_mb = 0
     
-    for pdf in pdf_files:
+    # We enumerate to give them an initial default order (1, 2, 3...)
+    for index, pdf in enumerate(pdf_files):
         try:
             # Reset pointer to read file info
             pdf.seek(0)
@@ -70,22 +72,28 @@ def get_pdf_stats(pdf_files):
             pages = len(reader.pages)
             size_mb = pdf.size / (1024 * 1024)
             
-            stats.append({
-                "name": pdf.name,
-                "pages": pages,
-                "size": f"{size_mb:.2f} MB"
+            stats_data.append({
+                "Order": index + 1, # Default sequence
+                "Filename": pdf.name,
+                "Pages": pages,
+                "Size (MB)": round(size_mb, 2)
             })
             total_pages += pages
             total_size_mb += size_mb
         except Exception:
-            stats.append({"name": pdf.name, "pages": "Error", "size": "N/A"})
+            stats_data.append({
+                "Order": index + 1,
+                "Filename": pdf.name, 
+                "Pages": 0, 
+                "Size (MB)": 0.0
+            })
             
-    return stats, total_pages, total_size_mb
+    return stats_data, total_pages, total_size_mb
 
-def merge_pdfs(pdf_files, password=None):
+def merge_pdfs(ordered_files, password=None):
     """Merges PDFs and optionally encrypts them."""
     merger = PdfWriter()
-    for pdf in pdf_files:
+    for pdf in ordered_files:
         pdf.seek(0) # Ensure we read from the start
         reader = PdfReader(pdf)
         merger.append(reader)
@@ -121,7 +129,7 @@ with st.sidebar:
             st.caption("⚠️ Please enter a password")
 
     st.markdown("---")
-    st.markdown("v1.2")
+    st.markdown("v1.3 Pro")
 
 # --- 5. MAIN DASHBOARD ---
 
@@ -140,11 +148,19 @@ uploaded_pdfs = st.file_uploader(
 
 # Dashboard Content (Only shows if files are uploaded)
 if uploaded_pdfs:
-    # 1. Get file statistics
-    file_stats, total_pages, total_size = get_pdf_stats(uploaded_pdfs)
+    # 1. Map files for easy retrieval later {filename: file_object}
+    # Note: If users upload files with identical names, this simple map might overwrite. 
+    # For production, you might want to map by index, but this works for 99% of cases.
+    file_map = {f.name: f for f in uploaded_pdfs}
+
+    # 2. Get file statistics
+    raw_stats, total_pages, total_size = get_pdf_stats(uploaded_pdfs)
     num_files = len(uploaded_pdfs)
 
-    # 2. Top Metrics Row
+    # 3. Create DataFrame for Editing
+    df = pd.DataFrame(raw_stats)
+
+    # 4. Top Metrics Row
     m1, m2, m3, m4 = st.columns(4)
     m1.metric("Documents Queued", f"{num_files}", delta="Ready")
     m2.metric("Total Pages", f"{total_pages}", help="Sum of pages across all documents.")
@@ -153,20 +169,30 @@ if uploaded_pdfs:
 
     st.markdown("<br>", unsafe_allow_html=True) # Spacer
 
-    # 3. Main Content Columns
+    # 5. Main Content Columns
     col_left, col_right = st.columns([3, 2])
 
     with col_left:
-        st.markdown('<div class="css-card"><h3>🗂️ Document Queue</h3>', unsafe_allow_html=True)
+        st.markdown('<div class="css-card"><h3>🗂️ Document Queue (Edit Order)</h3>', unsafe_allow_html=True)
+        st.info("💡 Tip: Click the **Order** numbers below to rearrange the merge sequence.")
         
-        # Display files in a clean table format
-        st.dataframe(
-            file_stats, 
+        # INTERACTIVE DATA EDITOR
+        edited_df = st.data_editor(
+            df,
             column_config={
-                "name": "Document Name",
-                "pages": st.column_config.NumberColumn("Pages", format="%d"),
-                "size": "File Size"
+                "Order": st.column_config.NumberColumn(
+                    "Merge Order",
+                    help="1 = First page, 2 = Second page...",
+                    min_value=1,
+                    step=1,
+                    required=True,
+                ),
+                "Size (MB)": st.column_config.NumberColumn(
+                    "Size (MB)",
+                    format="%.2f MB"
+                )
             },
+            disabled=["Filename", "Pages", "Size (MB)"], # Lock other columns
             hide_index=True,
             use_container_width=True
         )
@@ -175,20 +201,42 @@ if uploaded_pdfs:
     with col_right:
         st.markdown('<div class="css-card"><h3>🚀 Actions & Status</h3>', unsafe_allow_html=True)
         
-        st.markdown(f"**Ready to create:** `{output_name}`")
+        # --- RE-SORTING LOGIC ---
+        # 1. Sort the dataframe based on the user's "Order" input
+        sorted_df = edited_df.sort_values(by="Order")
+        
+        # 2. Rebuild the list of file objects in the new order
+        # We handle cases where filenames might be missing (safety check)
+        try:
+            ordered_files_list = [file_map[row['Filename']] for index, row in sorted_df.iterrows()]
+            can_merge = True
+        except KeyError:
+            st.error("⚠️ Error mapping files. Please remove duplicates.")
+            can_merge = False
+
+        st.markdown(f"**Output Target:** `{output_name}`")
+        
+        # Validation Logic
         if add_password and not user_password:
              st.warning("⚠️ Please set a password in the sidebar.")
              can_merge = False
         elif num_files < 2:
              st.info("ℹ️ Please upload at least 2 files to merge.")
              can_merge = False
-        else:
-             can_merge = True
+        
+        # Show Current Order (Preview)
+        if can_merge:
+            st.markdown("**Sequence Preview:**")
+            # Show a mini list of the first 3 files to confirm order
+            preview_text = " ➡️ ".join([f['Filename'][:10]+"..." for f in sorted_df.to_dict('records')[:3]])
+            if len(sorted_df) > 3: preview_text += "..."
+            st.caption(preview_text)
 
         if can_merge:
             if st.button("Begin Merge Sequence ⚡"):
-                with st.spinner("Merging documents..."):
-                    final_pdf = merge_pdfs(uploaded_pdfs, user_password)
+                with st.spinner("Merging documents in specified order..."):
+                    # Pass the ORDERED list to the merge function
+                    final_pdf = merge_pdfs(ordered_files_list, user_password)
                     st.success("✅ Merge Complete!")
                     
                     st.download_button(
