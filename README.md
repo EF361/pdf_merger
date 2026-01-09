@@ -8,29 +8,30 @@
 
 ## 🚀 Overview
 
-PDF Fusion Pro is a modern web application designed to replace unsafe online PDF tools. Built with **Streamlit** and **pypdf**, it processes documents entirely on your local machine—ensuring sensitive data never leaves your computer. 
+PDF Fusion Pro is a modern web application designed to replace unsafe online PDF tools. Built with **Streamlit**, **Pandas**, and **pypdf**, it processes documents entirely on your local machine—ensuring sensitive data never leaves your computer. 
 
-It features a professional "Dark Mode" dashboard, real-time file analytics, and bank-grade password encryption.
+It features a professional "Dark Mode" dashboard, real-time file analytics, bank-grade password encryption, and a **new interactive sequencing engine** to arrange your files exactly how you want them.
 
 ## ✨ Key Features
 
 * **🛡️ Privacy First:** 100% local processing. No files are uploaded to external servers.
-* **📊 Smart Dashboard:** View real-time metrics including total page count and file size before merging.
+* **🔢 Smart Reordering:** Interactive data table allows you to edit the merge sequence on the fly—no need to re-upload files to fix the order.
+* **📊 Live Analytics:** View real-time metrics including total page count and file size before merging.
 * **🔒 Security:** Encrypt your output documents with password protection (AES-128).
 * **🎨 Pro UI:** A clean, dark-themed interface with a sidebar for settings and a visual document queue.
-* **⚡ Customization:** Set custom filenames and organize the merge order effortlessly.
 
 ## 🛠️ Tech Stack
 
 * **Python 3.10+**
-* **Frontend:** [Streamlit](https://streamlit.io/) (for the reactive dashboard UI)
-* **Backend:** [pypdf](https://pypi.org/project/pypdf/) (for PDF manipulation and encryption)
+* **Frontend:** [Streamlit](https://streamlit.io/) (Reactive dashboard UI & Data Editor)
+* **Data Engine:** [Pandas](https://pandas.pydata.org/) (Dataframe manipulation for file sequencing)
+* **Backend:** [pypdf](https://pypi.org/project/pypdf/) (PDF manipulation and encryption)
 
 ## 📦 Installation
 
 1.  **Clone the repository**:
     ```bash
-    git clone https://github.com/EF361/pdf_merger.git
+    git clone [https://github.com/EF361/pdf_merger.git](https://github.com/EF361/pdf_merger.git)
     cd pdf_merger
     ```
 
@@ -45,7 +46,7 @@ It features a professional "Dark Mode" dashboard, real-time file analytics, and 
 
 3.  **Install dependencies**:
     ```bash
-    pip install streamlit pypdf
+    pip install streamlit pypdf pandas
     ```
 
 ## 🏃‍♂️ How to Run
@@ -68,7 +69,7 @@ You can access the deployed version immediately without installation:
 1.  **Configure Output:** Open the Sidebar (Left Panel) to set your desired filename.
 2.  **Set Security (Optional):** Toggle "Enable Password Protection" in the sidebar to encrypt your file.
 3.  **Upload Files:** Drag and drop multiple PDF files into the main upload area.
-4.  **Review Metrics:** Check the "Document Queue" card to verify page counts and file sizes.
+4.  **Reorder Sequence:** Look at the **Document Queue** table. Click on the numbers in the **"Merge Order"** column and edit them to change the sequence (e.g., change `2` to `1` to move a file to the top).
 5.  **Merge:** Click **"Begin Merge Sequence ⚡"** to process and download your file.
 
 ## 📂 Project Structure
@@ -78,10 +79,5 @@ pdf_merger_app/
 ├── venv/                   # Virtual environment
 ├── pdf_merger.py           # Main application logic & UI
 ├── dashboard_preview.png   # Screenshot for README
-├── requirements.txt        # Dependencies list
+├── requirements.txt        # Dependencies list (streamlit, pypdf, pandas)
 └── README.md               # Documentation
-```
-
-## 📄 License
-
-This project is licensed under the MIT License. Feel free to fork, modify, and use it for your own workflows.
