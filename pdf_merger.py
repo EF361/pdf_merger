@@ -1,7 +1,7 @@
 import streamlit as st
 from pypdf import PdfWriter, PdfReader
 from io import BytesIO
-import pandas as pd # <--- Added pandas for table manipulation
+import pandas as pd 
 
 # --- 1. PAGE & THEME CONFIGURATION ---
 st.set_page_config(
@@ -62,8 +62,7 @@ def get_pdf_stats(pdf_files):
     stats_data = []
     total_pages = 0
     total_size_mb = 0
-    
-    # We enumerate to give them an initial default order (1, 2, 3...)
+
     for index, pdf in enumerate(pdf_files):
         try:
             # Reset pointer to read file info
@@ -73,7 +72,7 @@ def get_pdf_stats(pdf_files):
             size_mb = pdf.size / (1024 * 1024)
             
             stats_data.append({
-                "Order": index + 1, # Default sequence
+                "Order": index + 1, 
                 "Filename": pdf.name,
                 "Pages": pages,
                 "Size (MB)": round(size_mb, 2)
@@ -94,7 +93,7 @@ def merge_pdfs(ordered_files, password=None):
     """Merges PDFs and optionally encrypts them."""
     merger = PdfWriter()
     for pdf in ordered_files:
-        pdf.seek(0) # Ensure we read from the start
+        pdf.seek(0) 
         reader = PdfReader(pdf)
         merger.append(reader)
 
@@ -138,7 +137,7 @@ st.title("📄 PDF Fusion Pro")
 st.caption("Enterprise-grade document merging and security dashboard.")
 st.markdown("---")
 
-# File Upload Section (Full Width)
+# File Upload Section 
 uploaded_pdfs = st.file_uploader(
     "Drag & drop your PDFs here to begin processing", 
     type="pdf", 
@@ -146,11 +145,9 @@ uploaded_pdfs = st.file_uploader(
     label_visibility="collapsed"
 )
 
-# Dashboard Content (Only shows if files are uploaded)
+# Dashboard Content 
 if uploaded_pdfs:
     # 1. Map files for easy retrieval later {filename: file_object}
-    # Note: If users upload files with identical names, this simple map might overwrite. 
-    # For production, you might want to map by index, but this works for 99% of cases.
     file_map = {f.name: f for f in uploaded_pdfs}
 
     # 2. Get file statistics
@@ -167,7 +164,7 @@ if uploaded_pdfs:
     m3.metric("Total Size", f"{total_size:.2f} MB")
     m4.metric("Security Status", "Protected" if add_password else "Standard", delta="Secure" if add_password else None, delta_color="normal")
 
-    st.markdown("<br>", unsafe_allow_html=True) # Spacer
+    st.markdown("<br>", unsafe_allow_html=True) 
 
     # 5. Main Content Columns
     col_left, col_right = st.columns([3, 2])
@@ -192,7 +189,7 @@ if uploaded_pdfs:
                     format="%.2f MB"
                 )
             },
-            disabled=["Filename", "Pages", "Size (MB)"], # Lock other columns
+            disabled=["Filename", "Pages", "Size (MB)"], 
             hide_index=True,
             use_container_width=True
         )
@@ -227,7 +224,6 @@ if uploaded_pdfs:
         if can_merge:
             if st.button("Begin Merge Sequence ⚡"):
                 with st.spinner("Merging documents in specified order..."):
-                    # Pass the ORDERED list to the merge function
                     final_pdf = merge_pdfs(ordered_files_list, user_password)
                     st.success("✅ Merge Complete!")
                     
@@ -240,5 +236,4 @@ if uploaded_pdfs:
         st.markdown('</div>', unsafe_allow_html=True)
 
 else:
-    # Empty State
     st.info("👆 To get started, upload your PDF documents above.")
