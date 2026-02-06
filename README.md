@@ -46,7 +46,7 @@ It features a professional "Dark Mode" dashboard, real-time file analytics, bank
 
 3.  **Install dependencies**:
     ```bash
-    pip install streamlit pypdf pandas
+    pip install streamlit pypdf streamlit-sortables
     ```
 
 ## 🏃‍♂️ How to Run
