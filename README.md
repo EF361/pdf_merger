@@ -1,91 +1,88 @@
-# PDF Merger & Manipulation Tool
+# PDF Merger  
 
-[![Python](https://img.shields.io/badge/Python-3.8%2B-blue)](https://www.python.org/)  
-[![Streamlit](https://img.shields.io/badge/Streamlit-%F0%9F%9A%80-red)](https://streamlit.io/)  
-[![PyPDF](https://img.shields.io/badge/PyPDF-PDF%20manipulation-green)](https://pypdf.readthedocs.io/)  
-[![License](https://img.shields.io/badge/License-MIT-yellow)](./LICENSE.md)  
-[![Demo](https://img.shields.io/badge/View-Demo-orange)](#quickstart-installation)  
+![Python version](https://img.shields.io/badge/Python-3.8%2B-blue)  
+![Streamlit](https://img.shields.io/badge/Streamlit-%E2%9A%A1%EF%B8%8F-red)  
+![PyPDF](https://img.shields.io/badge/Library-PyPDF-informational)  
+![License](https://img.shields.io/badge/License-MIT-green)  
+![Repository Size](https://img.shields.io/github/repo-size/EF361/pdf_merger)  
 
-## Executive Summary
-PDF Merger & Manipulation Tool empowers users to effortlessly handle their PDF files with a privacy-first, user-friendly interface. Combine, split, encrypt, and customize your PDFs directly in your browser—no uploads, no data leaks!
+## Executive Summary  
+**PDF Merger** is a lightweight, browser-based utility powered by Python and Streamlit for merging, splitting, and manipulating PDF files. It simplifies PDF processing with a user-friendly interface, while ensuring secure handling of files through temporary storage and strict cleanup rules.  
 
----
+## Key Features  
+- **Merge PDFs:** Combine multiple PDF files into a single document with custom page order.  
+- **Split PDFs:** Extract specific pages or ranges into separate files.  
+- **Page Reordering:** Rearrange pages or remove unwanted ones before creating the output file.  
+- **Encrypted and Corrupted PDFs:** Built-in handling for encrypted files (with password input) and graceful error reporting for malformed PDFs.  
+- **Temporary File Lifecycle:** Uses secure, temporary file storage that guarantees cleanup after each session or operation.  
+- **Extensive File Validations:** Supports large files, mixed page sizes, and rotated documents, with upload size and processing-time limits to ensure smooth performance.  
+- **Actionable Errors:** Provides user-friendly error messages for various scenarios like maximum file size exceeded, unsupported formats, or empty uploads.  
+- **Test Coverage:** Tested for edge cases, including encrypted, corrupted, large-sized, and empty PDFs to ensure robust functionality.  
 
-## Key Features
-- **Merge PDFs**: Combine multiple PDF files into one seamless document in seconds.
-- **Split PDFs**: Extract specific pages or split large PDFs into smaller, manageable chunks.
-- **Encrypt PDFs**: Secure sensitive documents with password protection.
-- **Drag, Drop, and Reorder**: Easily rearrange PDF files or pages using a visual drag-and-drop interface.
-- **Streamlit-powered UI**: Enjoy an intuitive and interactive web app experience.
-- **Privacy First**: All processing happens locally on your machine—no file uploads, ensuring data security.
-- **Customizable Output Options**: Set page orientation, merging order, and output file names to fit your project needs.
-
----
-
-## Architecture & Workflow
-A streamlined local-first process ensures privacy and high performance from start to finish. Here’s how the tool operates behind the scenes:
+## Architecture & Workflow  
 
 ```mermaid
-graph TD
-    A[User Uploads PDFs] -->|Drag and Drop| B[Streamlit Frontend]
-    B -->|User Configures Options| C[Python Backend]
-    C -->|PyPDF Processing| D[Perform Selected Operation]
-    D -->|Output File to User| E[Download Processed PDF]
-```
+flowchart TD  
+    A[User Uploads PDFs] -->|Streamlit Upload Form| B[Streamlit Backend]  
+    B -->|Temporary Storage| C[File Validation]  
+    C -->|Ensure Encryption/Corruption Check| D[Define Operations (Merge/Split/Order)]  
+    D -->|PyPDF Processing| E[[Temporary Output File]]  
+    E -->|Present Download Link| F[User Downloads File]  
+    E -->|Session or Operation Ends| G[Temporary File Cleanup]  
+```  
+
+Each uploaded file is processed through Streamlit's backend, stored as a temporary file, and validated for encryption, size, or corruption. After completing the operation (e.g., merging, splitting), the temporary storage is cleaned up to ensure no files persist beyond their session or purpose.  
+
+## Tech Stack & Tools  
+- **Programming Language:** Python 3.8+  
+- **Web Framework:** Streamlit  
+- **PDF Processing:** PyPDF  
+- **Testing:** pytest (edge-case simulations: encrypted, corrupted, and large PDFs)  
+
+## Quickstart / Installation  
+
+Follow these steps to spin up the **PDF Merger** locally on your machine:  
+
+1. **Clone the Repository**  
+    ```bash  
+    git clone https://github.com/EF361/pdf_merger.git  
+    cd pdf_merger  
+    ```  
+
+2. **Set up Python Environment**  
+    Create a virtual environment and install dependencies:  
+    ```bash  
+    python3 -m venv venv  
+    source venv/bin/activate  # Use `venv\Scripts\activate` on Windows  
+    pip install -r requirements.txt  
+    ```  
+
+3. **Run the Application**  
+    Start the Streamlit server:  
+    ```bash  
+    streamlit run app.py  
+    ```  
+    Open [http://localhost:8501](http://localhost:8501) in your browser to begin using the app.  
+
+4. **Testing**  
+    Run the test suite to validate edge-case handling:  
+    ```bash  
+    pytest tests/  
+    ```  
+
+## Security & Limitations  
+- **File Handling:** Uploaded files are temporarily stored for processing and automatically deleted after each session or at the end of the file's lifecycle. No files are permanently retained in this application.  
+- **Resource Limits:**  
+  - **File Size Limit:** 50 MB per file  
+  - **Page Count Limit:** 1,000 pages per document  
+  - **Processing Time Limit:** 60 seconds per operation  
+
+    If these limits are exceeded, the app will provide clear feedback to the user.  
+
+- **Feature Roadmap:**  
+  Additional plans for annotation, watermarking, and batch encryption/decryption are underway. Unsupported operations are currently marked as "Planned."  
 
 ---
 
-## Tech Stack & Tools Breakdown
-### Programming Languages & Frameworks
-- **Python 3.8+**: Core programming language for backend logic.
-- **Streamlit**: Lightweight and efficient framework for building the interactive web app.
-
-### Libraries & Dependencies
-- **PyPDF**: Handles PDF merging, splitting, and encryption at high performance.
-- **Streamlit Components**: Enables the drag-and-drop file upload widget.
-- **Other Utilities**: Standard Python packages for exception handling, logging, and I/O operations.
-
----
-
-## Quickstart / Installation
-
-Clone the repository and jump right into simplifying your PDF tasks. Follow the steps below to set up the project:
-
-1. **Clone the Repository**
-   ```bash
-   git clone https://github.com/EF361/pdf_merger.git
-   cd pdf_merger
-   ```
-
-2. **Set Up a Virtual Environment**
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows, use venv\Scripts\activate
-   ```
-
-3. **Install Dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. **Run the Application**
-   ```bash
-   streamlit run app.py
-   ```
-
-5. **Access the App**
-   Open your browser and navigate to `http://localhost:8501`.
-
----
-
-## Contributing
-Contributions are welcome! Open an issue or submit a pull request to propose new features or fixes.
-
----
-
-## License
-This project is licensed under the MIT License—see the [LICENSE](./LICENSE.md) file for details.
-
----
-
-Developed with ❤️ by **Alicia Goh (EF361)**, showcasing powerful automation for modern PDF workflows!
+**Author:** Alicia Goh ([@EF361](https://github.com/EF361))  
+Delivered with precision, reliability, and security in mind. If you find this project useful, please ⭐ the repository!
