@@ -1,57 +1,91 @@
-# PDF Merger 📄🔗  
-_A Lightweight, Privacy-Focused PDF Merging Tool_  
+# PDF Merger & Manipulation Tool
 
-![Python](https://img.shields.io/badge/Python-3.8%2B-blue?style=flat-square&logo=python)  
-![Streamlit](https://img.shields.io/badge/Built%20with-Streamlit-red?style=flat-square)  
-![PyPDF](https://img.shields.io/badge/Powered_by-PyPDF-yellowgreen?style=flat-square)  
-![Privacy Focused](https://img.shields.io/badge/Privacy-Guaranteed-important?style=flat-square)  
+[![Python](https://img.shields.io/badge/Python-3.8%2B-blue)](https://www.python.org/)  
+[![Streamlit](https://img.shields.io/badge/Streamlit-%F0%9F%9A%80-red)](https://streamlit.io/)  
+[![PyPDF](https://img.shields.io/badge/PyPDF-PDF%20manipulation-green)](https://pypdf.readthedocs.io/)  
+[![License](https://img.shields.io/badge/License-MIT-yellow)](./LICENSE.md)  
+[![Demo](https://img.shields.io/badge/View-Demo-orange)](#quickstart-installation)  
 
----
-
-## 📈 Business Value 
-
-Does wrangling multiple PDF files overcomplicate your workflows? Wish there was an easy way to merge these files in a secure, performant way?  
-**Enter PDF Merger.**  
-
-This tool eliminates the dependency on internet connectivity for merging PDF files, ensuring **total privacy**, **speed**, and **control** over your documents.  
-
-Designed for business professionals, students, and anyone needing to collate information, PDF Merger empowers you to:  
-- Merge **multiple PDFs** in seconds.  
-- Customize the **merge order** to reflect your priorities.  
-- Personalize merging with **advanced options** like page selections and rotations.  
-
-With **data never leaving your local machine**, PDF Merger guarantees absolute peace of mind when handling sensitive documentation.
+## Executive Summary
+PDF Merger & Manipulation Tool empowers users to effortlessly handle their PDF files with a privacy-first, user-friendly interface. Combine, split, encrypt, and customize your PDFs directly in your browser—no uploads, no data leaks!
 
 ---
 
-## 🛠 Tech Stack  
-This project is built with a cutting-edge combination of:  
-- **Python**: The engine behind our efficient file operations.  
-- **Streamlit**: A sleek, interactive user interface for seamless user experiences.  
-- **PyPDF**: A powerful library for PDF manipulation, enabling detailed customization.  
-- **Pandas**: Efficiently organizes metadata and file tracking for better merge logic.  
+## Key Features
+- **Merge PDFs**: Combine multiple PDF files into one seamless document in seconds.
+- **Split PDFs**: Extract specific pages or split large PDFs into smaller, manageable chunks.
+- **Encrypt PDFs**: Secure sensitive documents with password protection.
+- **Drag, Drop, and Reorder**: Easily rearrange PDF files or pages using a visual drag-and-drop interface.
+- **Streamlit-powered UI**: Enjoy an intuitive and interactive web app experience.
+- **Privacy First**: All processing happens locally on your machine—no file uploads, ensuring data security.
+- **Customizable Output Options**: Set page orientation, merging order, and output file names to fit your project needs.
 
 ---
 
-## 🚀 How It Works  
+## Architecture & Workflow
+A streamlined local-first process ensures privacy and high performance from start to finish. Here’s how the tool operates behind the scenes:
 
-Here's how PDF Merger simplifies your file merging needs:  
-
-1. **File Upload**: Upload your desired PDF files via the user-friendly Streamlit UI. Files stay local to your machine.  
-2. **Advanced Customization**:  
-    - Arrange the files in your preferred order using drag-and-drop controls.  
-    - Specify **page ranges** to include only selected pages from each PDF.  
-    - Apply rotations to individual files or specific pages for alignment consistency.  
-3. **Merge Operation**: Execute the merge with a single click. Our PyPDF-powered backend processes and consolidates the files into a polished, downloadable document.  
-4. **Download and Use**: Save the generated PDF to your local device—quick, private, and secure.  
+```mermaid
+graph TD
+    A[User Uploads PDFs] -->|Drag and Drop| B[Streamlit Frontend]
+    B -->|User Configures Options| C[Python Backend]
+    C -->|PyPDF Processing| D[Perform Selected Operation]
+    D -->|Output File to User| E[Download Processed PDF]
+```
 
 ---
 
-## ✨ Why Choose PDF Merger?
+## Tech Stack & Tools Breakdown
+### Programming Languages & Frameworks
+- **Python 3.8+**: Core programming language for backend logic.
+- **Streamlit**: Lightweight and efficient framework for building the interactive web app.
 
-- **📂 Advanced Customization**: Enhanced options give you full control over the merge configuration.  
-- **🔒 Privacy-First**: No data ever leaves your machine. No cloud. No compromise.  
-- **⚡ Performance**: Built for speed with enterprise-grade libraries.  
-- **🧑‍💻 Built by an Expert**: Developed by [@EF361](https://github.com/EF361), a specialist in AI automation and system architecture.  
+### Libraries & Dependencies
+- **PyPDF**: Handles PDF merging, splitting, and encryption at high performance.
+- **Streamlit Components**: Enables the drag-and-drop file upload widget.
+- **Other Utilities**: Standard Python packages for exception handling, logging, and I/O operations.
 
-Start merging smarter today. 🚀
+---
+
+## Quickstart / Installation
+
+Clone the repository and jump right into simplifying your PDF tasks. Follow the steps below to set up the project:
+
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/EF361/pdf_merger.git
+   cd pdf_merger
+   ```
+
+2. **Set Up a Virtual Environment**
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows, use venv\Scripts\activate
+   ```
+
+3. **Install Dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **Run the Application**
+   ```bash
+   streamlit run app.py
+   ```
+
+5. **Access the App**
+   Open your browser and navigate to `http://localhost:8501`.
+
+---
+
+## Contributing
+Contributions are welcome! Open an issue or submit a pull request to propose new features or fixes.
+
+---
+
+## License
+This project is licensed under the MIT License—see the [LICENSE](./LICENSE.md) file for details.
+
+---
+
+Developed with ❤️ by **Alicia Goh (EF361)**, showcasing powerful automation for modern PDF workflows!
