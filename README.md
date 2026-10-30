@@ -21,6 +21,7 @@
 - **Efficiency & Safety**: Streamlined file-processing pipeline with upload size caps (default: 10 MB), dynamic resource usage profiling, and cleanup for temporary files.
 - **Advanced Adversarial Protection**: Detects and defends against malformed xref tables, object streams, recursive graphs, mixed rotations, and encrypted PDFs.
 - **Comprehensive Testing & Fuzzing**: Includes fuzzing fixtures and regression tests to maintain stability against edge cases and malformed adversarial inputs.
+- **PDF Unlocker**: Upload a locked PDF, enter its password, and download an unlocked copy. Also removes print/copy restrictions from PDFs that open without a password.
 - **User-Friendly UI**: Built with **Streamlit**, enabling an interactive, lightweight interface for non-technical users.
 - **Fully Containerized**: Provides Docker support for seamless deployment and consistent reproducibility.
 - **Python 3.8 Compatibility**: Legacy support with clear justification for broader adoption in enterprise settings.
