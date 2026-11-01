@@ -1,125 +1,80 @@
 # pdf_merger
+A simple PDF merger built with Streamlit.
 
-![Python](https://img.shields.io/badge/Python-3.8%2B-blue)
-![Streamlit](https://img.shields.io/badge/Streamlit-%E2%AD%90%20Interactive-red)
-![Docker](https://img.shields.io/badge/Containerization-Docker-blue)
-![Security](https://img.shields.io/badge/Security-Untrusted%20Code%20Handling-critical)
-![License](https://img.shields.io/badge/License-MIT-green)
-![Maintainer](https://img.shields.io/badge/Maintainer-EF361%20(Alicia%20Goh)-brightgreen)
-![Coverage](https://img.shields.io/badge/Testing%20Coverage-100%25-success)
+![Python](https://img.shields.io/badge/Python-3.x-blue)
+![Streamlit](https://img.shields.io/badge/Streamlit-N/A-brightgreen)
 
----
+[![Live Demo](https://img.shields.io/badge/Live_Demo-Online-blue)](https://mergepdfwizard.streamlit.app)
+<!-- Screenshot: add dashboard_preview.png -->
 
-## 🚀 Executive Summary
-**pdf_merger** is a robust file-processing application for merging multiple PDF documents securely, efficiently, and at scale. Built with **Streamlit**, it features isolated worker processing, strict file-handling controls, and memory-safe operations to mitigate risks with untrusted input.
+## Overview
+The `pdf_merger` is a lightweight tool that lets users combine multiple PDF files into one through a simple web interface. Built using Streamlit, it focuses on ease of use with drag-and-drop functionality and an intuitive dashboard for file handling.
 
----
+## Features
+- Merge multiple PDF files into one document.
+- User-friendly web interface with drag-and-drop support (powered by `streamlit-sortables`).
+- Configurable Streamlit UI settings managed via `.streamlit/config.toml`.
+- Basic encryption and decryption support with `cryptography`.
+- File preview showcasing the merged result before download.
 
-## 🔑 Key Features
-- **Secure File Handling**: Treats all user-provided PDFs as untrusted code, enforcing OS-level CPU, memory, and network restrictions.
-- **Isolated Processing Workers**: Dockerized execution ensures complete isolation and monitoring for timeouts, page size, decompression, and recursion.
-- **Efficiency & Safety**: Streamlined file-processing pipeline with upload size caps (default: 10 MB), dynamic resource usage profiling, and cleanup for temporary files.
-- **Advanced Adversarial Protection**: Detects and defends against malformed xref tables, object streams, recursive graphs, mixed rotations, and encrypted PDFs.
-- **Comprehensive Testing & Fuzzing**: Includes fuzzing fixtures and regression tests to maintain stability against edge cases and malformed adversarial inputs.
-- **PDF Unlocker**: Upload a locked PDF, enter its password, and download an unlocked copy. Also removes print/copy restrictions from PDFs that open without a password.
-- **User-Friendly UI**: Built with **Streamlit**, enabling an interactive, lightweight interface for non-technical users.
-- **Fully Containerized**: Provides Docker support for seamless deployment and consistent reproducibility.
-- **Python 3.8 Compatibility**: Legacy support with clear justification for broader adoption in enterprise settings.
-
----
-
-## 🛠️ Architecture & Workflow
-
-The **pdf_merger** system follows a secure, isolated workflow to manage and merge PDF files while adhering to best practices for memory and resource control. Here’s a high-level breakdown:
-
+## How It Works
 ```mermaid
 flowchart TD
-    A["User Uploads PDFs (via Streamlit Web UI)"] -->|"Verify Input Constraints: Size/Page Count/Extensions"| B["Isolated Docker Worker (Untrusted PDF Handler)"]
-    B -->|"Sanitize Input & Validate Format"| C["Decompress & Stream PDF Content"]
-    C -->|"Merge PDF Pages"| D["In-Memory Buffer (No Persistent Write)"]
-    D -->|"Verify Output Constraints: Page Count/Size"| E["Return Merged PDF for Secure Download"]
-    B -.->|"Handle Timeout/Resource Exhaustion"| F["Abort with Error Logs"]
-    B -->|"Temporary File Cleanup"| G["OS-Limited File System"]
+    A["User uploads PDFs"] -->|"drag-and-drop"| B["Streamlit UI"]
+    B -->|"uploads parsed"| C["pypdf for merging"]
+    C -->|"merge performed"| D["Temporary file creation"]
+    D -->|"result preview"| E["Streamlit UI updates"]
+    E -->|"user action"| F["Download merged PDF"]
 ```
 
----
+## Tech Stack
+- **Python** for primary scripting.
+- **Streamlit** for the web-based interface.
+- **PyPDF** for PDF parsing and merging.
+- **Cryptography** for encryption-related operations.
 
-## 🧰 Tech Stack & Tools Breakdown
-
-- **Python 3.8+**: Core language for all business logic and integrations.
-- **Streamlit**: Enables the interactive front-end for non-technical users.
-- **PyPDF**: Powers PDF operations like merging, security handling, and metadata management.
-- **Docker**: Ensures isolated, secure, and reproducible PDF processing environments.
-- **pytest**: Comprehensive testing, including fuzzing and regression against edge cases.
-- **Isolated Worker Processing**: Leverages OS-level restrictions on CPU/memory/network usage for untrusted inputs.
-- **Mermaid**: Visual flowchart diagrams for architecture transparency.
-- **Fuzz Testing**: Protects against malformed/unexpected PDF structures and adversarial attacks.
-
----
-
-## ⚡ Quickstart / Installation
+## Getting Started
 
 ### Prerequisites
-Ensure you have the following installed:
-- Python 3.8+ 
-- Docker
-- pip
+- Python 3.x installed on your system.
 
-### Step 1: Clone the Repository
-```bash
-git clone https://github.com/EF361/pdf_merger.git
-cd pdf_merger
+### Installation
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/EF361/pdf_merger.git
+   cd pdf_merger
+   ```
+2. Install dependencies using `pip`:
+   ```bash
+   pip install -r requirements.txt
+   ```
+3. Run the application:
+   ```bash
+   streamlit run pdf_merger.py
+   ```
+
+4. Open your browser at `http://localhost:8501`.
+
+## Project Structure
+```
+pdf_merger/
+├── .devcontainer/
+│   └── devcontainer.json       # Configuration for development in containers
+├── .streamlit/
+│   └── config.toml             # Customizations for the Streamlit app
+├── README.md                   # Project documentation
+├── dashboard_preview.png       # Preview image for the dashboard
+├── pdf_merger.py               # Main application script
+├── requirements.txt            # Project dependencies
+└── .gitignore                  # Git ignored files
 ```
 
-### Step 2: Set Up Virtual Environment and Install Dependencies
-```bash
-python3 -m venv venv
-source venv/bin/activate   # On Windows use 'venv\Scripts\activate'
-pip install -r requirements.txt
-```
-
-### Step 3: Run Application Locally
-```bash
-streamlit run app.py
-```
-
-Visit `http://localhost:8501` in your browser to access the UI.
-
-### Step 4: (Optional) Run in Docker
-```bash
-docker build -t pdf_merger .
-docker run -p 8501:8501 pdf_merger
-```
-
-### Step 5: Testing and Coverage
-```bash
-pytest --maxfail=5 --disable-warnings
-```
-
-### Step 6: Security & Cleanup
-- Uploaded PDF files are stored in **secure temporary directories** and are deleted after merging.
-- **Ensure Docker containers** are properly shutdown after processing:
-  ```bash
-  docker ps -a | grep pdf_merger | awk '{print $1}' | xargs docker rm -f
-  ```
+## Roadmap
+- [ ] Implement OS-level isolation for secure PDF processing.
+- [ ] Add automated vulnerability scanning for dependencies.
+- [ ] Optimize handling of malformed or large PDF files.
+- [ ] Support advanced configuration options for PDF metadata and layout.
 
 ---
 
-## 🎯 Audit's Key Reflections
-1. **Repository Size Control**: Regularly audit large files and remove test artifacts, output files, or binaries exceeding size limits.
-2. **Streamed vs. Materialized Operations**: Profile memory consumption for edge cases like highly compressed or malformed PDFs.
-3. **Python Support**: Upgrade support to Python >= 3.9 or validate enterprise demand for Python 3.8 legacy support.
-4. **Fuzzing Infrastructure**: Expand fixtures for encryption variants, malicious recursion, and mixed orientations.
-
----
-
-## 🔐 Security Highlights
-- Enforces **upload size limits** and decompression analysis pre-parsing.
-- Isolated workers defend against **unauthorized code execution**.
-- Temporary file locations are **locked-down, cleaned-up post-execution**.
-- Protects user data with **memory-safe, non-persistent file streaming**.
-
----
-
-## 👩‍💻 Maintainer: Alicia Goh (EF361)
-EF361 is a dedicated AI & Software Engineer committed to enabling secure, scalable, and developer-friendly solutions for high-risk domains.
+Built by [Alicia Goh](https://github.com/EF361)
